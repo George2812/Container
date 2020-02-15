@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 
 public class Main {
 
@@ -11,8 +12,16 @@ public class Main {
 		
 		Ship ship4=new Ship("Poseidonas",600);
 		
+	
 		
-		ContainerFrame cf=new ContainerFrame();
+		ArrayList<Ship> ships=new ArrayList<Ship>();
+		
+		ships.add(ship1);
+		ships.add(ship2);
+		ships.add(ship3);
+		ships.add(ship4);
+		
+		ContainerFrame cf=new ContainerFrame(ships);
 		
 	}
 

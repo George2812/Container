@@ -1,5 +1,8 @@
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -19,11 +22,13 @@ public class ContainerFrame extends JFrame {
 	private JList shipList;
 	private JPanel containerPanel;
 	private JPanel centralPanel;
+	private ArrayList<Ship> ships;
 	
 	
 	
 	
-	public ContainerFrame() {
+	public ContainerFrame(ArrayList<Ship> someShips) {
+		ships=someShips;
 		
 		codeField=new JTextField("Code");
 		destinationField=new JTextField("Destination");
@@ -53,9 +58,8 @@ public class ContainerFrame extends JFrame {
 		
 		DefaultListModel model=new DefaultListModel();
 		
-		model.addElement("Alpha");
-		model.addElement("Beta");
-		model.addElement("Theta");
+		for(Ship ship:ships)
+			model.addElement(ship.getName());
 		
 		shipList.setModel(model);
 		
@@ -63,6 +67,9 @@ public class ContainerFrame extends JFrame {
 		
 		this.setContentPane(centralPanel);
 		
+		ButtonListener listener=new ButtonListener();
+		createBulkButton.addActionListener(listener);
+		createRefridgeratorButton.addActionListener(listener);
 		
 		this.setVisible(true);
 		this.setTitle("Container Frame");
@@ -71,5 +78,46 @@ public class ContainerFrame extends JFrame {
 		
 	}
 
+	class ButtonListener implements ActionListener{
+
+		
+		public void actionPerformed(ActionEvent e) {
+			
+			String code=codeField.getText();
+			String destination=destinationField.getText();
+			String selectedShipName=(String)shipList.getSelectedValue();
+			
+			Ship selectedShip=null;
+			
+			for(Ship ship: ships)
+				if(ship.getName().equals(selectedShipName))
+					selectedShip=ship;
+				
+			if(e.getSource()==createBulkButton) {
+				
+				String weightText=weightField.getText();
+				
+				int weight=Integer.parseInt(weightText);
+				
+				Bulk newContainer=new Bulk(code,destination,weight);
+				
+				selectedShip.addContainer(newContainer);
+				
+			}
+			else {
+				
+				String powerText=powerField.getText();
+				
+				double power=Double.parseDouble(powerText);
+				
+				Refridgerator newContainer=new Refridgerator(code,destination,power);
+				
+				selectedShip.addContainer(newContainer);
+			}
+			
+			System.out.println("Selected Ship charge: "+selectedShip.getTotalCharge());
+		}
+		
+	}
 	
 }

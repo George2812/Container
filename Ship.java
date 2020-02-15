@@ -12,6 +12,9 @@ public class Ship {
 		this.capacity = capacity;
 	}
 	
+	public String getName() {
+		return name;
+	}
 	public void addContainer(Container aContainer) {
 		
 		if(containers.size()<capacity)
